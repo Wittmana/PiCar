@@ -82,8 +82,40 @@ process.stdin.on('keypress', async function(key, data)
 			console.log("Sending W");
             if (err) throw "Error Description: " + err;
         });
-	}		
-	if (data.ctrl && data.name === 't')
+	}
+	else if (data.name === 'space')
+	{
+		client.publish("data", "stop", function (err)
+        {
+			console.log("Sending Stop");
+            if (err) throw "Error Description: " + err;
+        });
+	}
+	else if (data.name === 's') 
+	{
+		client.publish("data", "reverse", function (err)
+        {
+			console.log("Sending S");
+            if (err) throw "Error Description: " + err;
+        });
+	}
+	else if (data.name === 'a') 
+	{
+		client.publish("data", "left", function (err)
+        {
+			console.log("Sending R");
+            if (err) throw "Error Description: " + err;
+        });
+	}
+	else if (data.name === 'd') 
+	{
+		client.publish("data", "right", function (err)
+        {
+			console.log("Sending D");
+            if (err) throw "Error Description: " + err;
+        });
+	}
+	else if (data.ctrl && data.name === 't')
 	{
 		client.publish("data", "exit", async function (err)
 		{

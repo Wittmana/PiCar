@@ -39,7 +39,7 @@ client.on('connect', function ()
 		});
 });
 
-client.on('message', async function(topic, message)
+client.on('message', function(topic, message)
 {
 	if (topic == 'sub')
 	{
@@ -50,22 +50,41 @@ client.on('message', async function(topic, message)
 	}
 	if (topic == 'data')
 	{
-		if(message == 'foward')
+		if (message == 'stop')
+		{
+			console.log("Recieved Stop")
+			stop();
+		}
+		else if(message == 'foward')
 		{
 			console.log("Recieved Foward");
+			stop();
 			rightFoward.pwmWrite(255);
 			leftFoward.pwmWrite(255);
-			await sleep(1000);
-			rightFoward.pwmWrite(0);
-			leftFoward.pwmWrite(0);
+		}
+		else if(message == 'reverse')
+		{
+			console.log("Recieved Revers")
+			stop();
+			rightReverse.pwmWrite(255);
+			leftReverse.pwmWrite(255);
+		}
+		else if(message == 'right')
+		{
+			console.log("Recieved Revers")
+			stop();
+			leftFoward.pwmWrite(150);
+		}
+		else if(message == 'left')
+		{
+			console.log("Recieved Revers")
+			stop();
+			rightFoward.pwmWrite(150);
 		}
 		else if(message == 'exit')
 		{
 			console.log("Recieved Exit");
-			leftReverse.pwmWrite(0);
-			rightFoward.pwmWrite(0);
-			rightReverse.pwmWrite(0);
-			leftFoward.pwmWrite(0);
+			stop();
 			delete rightReverse;
 			delete leftFoward;
 			process.exit(0);
@@ -73,18 +92,16 @@ client.on('message', async function(topic, message)
 	}
 });
 
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
-
-process.on('SIGINT', function()
-{
+function stop() {
 	leftReverse.pwmWrite(0);
 	rightFoward.pwmWrite(0);
 	rightReverse.pwmWrite(0);
 	leftFoward.pwmWrite(0);
+}
+
+process.on('SIGINT', function()
+{
+	stop();
 	delete rightReverse;
 	delete leftFoward;
 	process.exit(0);
