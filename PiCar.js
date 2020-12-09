@@ -1,3 +1,8 @@
+/*Name:		Alexander Wittman
+* Project:  Final IoT Project
+* Due Date:	12/09/2020
+*/
+
 const mqtt = require('mqtt');
 const Gpio = require('pigpio').Gpio;
 const NodeRSA = require('node-rsa');
